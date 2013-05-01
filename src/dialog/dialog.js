@@ -68,7 +68,10 @@ dialogModule.provider("$dialog", function(){
       var self = this, options = this.options = angular.extend({}, defaults, globalOptions, opts);
       this._open = false;
 
-      this.backdropEl = createElement(options.backdropClass);
+      if (activeBackdrops.value===0) {
+          activeBackdrops.backdropEl= createElement(options.backdropClass);
+      }
+      this.backdropEl = activeBackdrops.backdropEl;
       if(options.backdropFade){
         this.backdropEl.addClass(options.transitionClass);
         this.backdropEl.removeClass(options.triggerClass);
@@ -224,6 +227,7 @@ dialogModule.provider("$dialog", function(){
         activeBackdrops.value--;
         if (activeBackdrops.value === 0) {
           this.backdropEl.remove(); 
+          activeBackdrops.backdropEl = {};
         }
       }
       this._open = false;
